@@ -1,0 +1,109 @@
+<style>
+  span{
+    color: Yellow;
+    background-color: #ffff66;
+    border: solid 2px yellow;
+  }
+
+  textarea{
+    resize:none;
+    margin-bottom: 20px;
+  }
+
+  .header{
+    margin: 50px 0px 50px 0px;
+  }
+
+    .do{
+      border: 2px solid yellow;
+      background-color: #ffff66;
+      padding: 20px;
+      width: 250px;
+      height: 200px;
+    }
+
+    .body{
+      background-color: #F7F7F7;
+      padding:10px 50px 50px 50px;
+    }
+
+    .todoc{
+      font-size: 20px;
+    }
+
+    .btn-1{
+      background-color: white;
+      color: sandybrown;
+    }
+
+    .do_c{
+      margin-top: 10px;
+      width: 350px;
+      height: 200px;
+    }
+
+  .do1{
+    border: 2px solid skyblue;
+    background-color: lightskyblue;
+    width: 250px;
+  }
+    .footer{
+      padding: 20px;
+    }
+</style>
+<div class = 'container'>
+  <div class="header">
+    <h1><span>ab</span>   SHARE TODO</h1>
+  </div>
+  <div class="body">
+    <h2>POST TODO</h2>
+    <form action = "/home/create" method= "post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="title">NAME</label>
+        <input type="text" class="form-control" id="title" name = "title" placeholder="name">
+      </div>
+      <div class="form-group">
+        <label for="content">TODO</label>
+        <textarea name = 'content' id = 'content' class = 'form-control' rows="6"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputFile">POST PHOTO</label>
+        <input type="file" name="img" id="img">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+  <h2>THINGS TODO</h2>
+  <% @posts.each do |post| %>
+    <div class = 'col-md-4'>
+      <a class="btn" href = '/home/read/<%=post.id%>'>READ</a>
+      <a class="btn" href = '/home/update/<%=post.id%>'>UP</a>
+      <a class="btn" href = '/home/destroy/<%=post.id%>'>DEL</a>
+      <div class="do">
+        <h3><%=post.title%></h3>
+        <p class="todoc"><%=post.content%></p>
+        <a class="btn-1" href = '/home/photo/<%=post.id%>'>CLICK TO SEE PHOTO</a>
+      </div>
+      <div class="do_c">
+      <form class="form-inline" action = "/home/<%=post.id%>/reply_create" method= "get" enctype="multipart/form-data">
+          <label class="sr-only" for="exampleInputEmail3">REPLY</label>
+          <input type="text" class="form-control" id="content" name="content" placeholder="reply">
+        <button type="submit" class="btn btn-default">ENTER</button>
+      </form>
+        <hr>
+        <div class="do1">
+          <% post.comments.each do |c| %>
+              <b><%= c.content%> </b>
+              <a class="btn" href = '/home/<%= post.id %>/reply_destroy/<%= c.id %>'>DEL</a>
+              <br>
+          <% end %>
+        </div>
+        <hr>
+      </div>
+    </div>
+
+<% end %>
+</div>
+<div class="footer container">
+  <p>minD appication</p>
+</div>
